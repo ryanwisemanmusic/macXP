@@ -1,25 +1,8 @@
-#ifndef ERROR_CODES_H
-#define ERROR_CODES_H
+#ifndef DOS_16_TYPES_H
+#define DOS_16_TYPES_H
 #include <unistd.h>
 #include <stdint.h>
 #include <inttypes.h>
-
-typedef enum ErrorCode {
-    FAILED_GET_ADDRESS_FETCH,
-    FAILED_ALLOCATION
-} ErrorCode;
-
-#define HANDLE_ERROR(code)                                 \
-    do {                                                   \
-        switch (code) {                                    \
-            case FAILED_GET_ADDRESS_FETCH:                 \
-                write(2, "failed getting address\n", 24);  \
-                break;                                     \
-            case FAILED_ALLOCATION:                        \
-                write(2, "allocation failure\n", 19);      \
-                break;                                     \
-        }                                                  \
-    } while (0)
 
 // Add proper definitions so our OS knows what we are talking about
 // Because DOS fucking sucks in modernizing to ARM64
