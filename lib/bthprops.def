@@ -1,0 +1,12 @@
+_BluetoothFindFirstRadio
+_BluetoothFindFirstRadio@8
+_BluetoothFindFirstDevice
+_BluetoothFindFirstDevice@8
+_BluetoothFindNextDevice
+_BluetoothFindNextDevice@8
+_BluetoothFindDeviceClose
+_BluetoothFindDeviceClose@4
+_BluetoothFindNextRadio
+_BluetoothFindNextRadio@8
+_BluetoothFindRadioClose
+_BluetoothFindRadioClose@4
