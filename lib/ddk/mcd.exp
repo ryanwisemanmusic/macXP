@@ -1,0 +1,10 @@
+_ChangerClassAllocatePool
+_ChangerClassAllocatePool@8
+_ChangerClassDebugPrint
+_ChangerClassDebugPrint@8
+_ChangerClassFreePool
+_ChangerClassFreePool@4
+_ChangerClassInitialize
+_ChangerClassInitialize@12
+_ChangerClassSendSrbSynchronous
+_ChangerClassSendSrbSynchronous@20

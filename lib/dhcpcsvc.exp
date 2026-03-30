@@ -1,0 +1,12 @@
+_DhcpCApiCleanup
+_DhcpCApiCleanup@0
+_DhcpCApiInitialize
+_DhcpCApiInitialize@4
+_DhcpDeRegisterParamChange
+_DhcpDeRegisterParamChange@12
+_DhcpRegisterParamChange
+_DhcpRegisterParamChange@28
+_DhcpRemoveDNSRegistrations
+_DhcpRemoveDNSRegistrations@0
+_DhcpUndoRequestParams
+_DhcpUndoRequestParams@16

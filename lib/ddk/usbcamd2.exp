@@ -1,0 +1,14 @@
+_DllUnload
+_DllUnload@0
+_USBCAMD_AdapterReceivePacket
+_USBCAMD_AdapterReceivePacket@16
+_USBCAMD_ControlVendorCommand
+_USBCAMD_ControlVendorCommand@36
+_USBCAMD_DriverEntry
+_USBCAMD_DriverEntry@20
+_USBCAMD_GetRegistryKeyValue
+_USBCAMD_GetRegistryKeyValue@20
+_USBCAMD_InitializeNewInterface
+_USBCAMD_InitializeNewInterface@16
+_USBCAMD_SelectAlternateInterface
+_USBCAMD_SelectAlternateInterface@8

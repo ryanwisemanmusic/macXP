@@ -1,0 +1,12 @@
+_UPSCancelWait
+_UPSCancelWait@0
+_UPSGetState
+_UPSGetState@0
+_UPSInit
+_UPSInit@0
+_UPSStop
+_UPSStop@0
+_UPSTurnOff
+_UPSTurnOff@4
+_UPSWaitForStateChange
+_UPSWaitForStateChange@8

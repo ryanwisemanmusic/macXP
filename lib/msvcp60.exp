@@ -1,0 +1,10 @@
+_btowc
+_mbrlen
+_mbrtowc
+_mbsrtowcs
+_towctrans
+_wcrtomb
+_wcsrtombs
+_wctob
+_wctrans
+_wctype

@@ -1,0 +1,14 @@
+_Direct3DCreate
+_Direct3DCreate@12
+_Direct3D_HALCleanUp
+_Direct3D_HALCleanUp@8
+_FlushD3DDevices
+_FlushD3DDevices@4
+_FlushD3DDevices2
+_FlushD3DDevices2@4
+_PaletteAssociateNotify
+_PaletteAssociateNotify@16
+_PaletteUpdateNotify
+_PaletteUpdateNotify@20
+_SurfaceFlipNotify
+_SurfaceFlipNotify@4

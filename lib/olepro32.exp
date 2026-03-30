@@ -1,0 +1,14 @@
+_OleCreateFontIndirect
+_OleCreateFontIndirect@12
+_OleCreatePictureIndirect
+_OleCreatePictureIndirect@16
+_OleCreatePropertyFrame
+_OleCreatePropertyFrame@44
+_OleCreatePropertyFrameIndirect
+_OleCreatePropertyFrameIndirect@4
+_OleIconToCursor
+_OleIconToCursor@8
+_OleLoadPicture
+_OleLoadPicture@20
+_OleTranslateColor
+_OleTranslateColor@12
