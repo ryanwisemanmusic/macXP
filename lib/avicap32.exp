@@ -1,0 +1,12 @@
+_videoThunk32
+_videoThunk32@20
+_capGetDriverDescriptionW
+_capGetDriverDescriptionW@20
+_capGetDriverDescriptionA
+_capGetDriverDescriptionA@20
+_capCreateCaptureWindowW
+_capCreateCaptureWindowW@32
+_capCreateCaptureWindowA
+_capCreateCaptureWindowA@32
+_AppCleanup
+_AppCleanup@4
