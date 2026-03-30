@@ -18,6 +18,8 @@
 extern "C" {
 #endif
 
+#include "win32defs.h"
+
 /* Exceptions: */
 #define EXCEPTION_MAXIMUM_PARAMETERS    15
 #define EXCEPTION_EXECUTE_HANDLER       0x1
@@ -161,7 +163,7 @@ typedef struct _NT_TIB {                    /*   x86  /   x64  */
 } NT_TIB, *LPNT_TIB, *PNT_TIB;
 
 /* Exceptions: */
-#if defined(_WIN64)
+#if defined(_WIN64) || defined(__x86_64__) || defined(__aarch64__) || defined(__arm64__)
 typedef struct DECLSPEC_ALIGN(16) _M128A {
     ULONGLONG       Low;
     LONGLONG        High;
@@ -182,7 +184,7 @@ typedef struct DECLSPEC_ALIGN(16) _XSAVE_FORMAT {
     DWORD           MxCsr_Mask;
     M128A           FloatRegisters[8];
 
-#if defined(_WIN64)
+#if defined(_WIN64) || defined(__x86_64__) || defined(__aarch64__) || defined(__arm64__)
     M128A           XmmRegisters[16];
     BYTE            Reserved4[96];
 #else
@@ -273,7 +275,7 @@ typedef struct DECLSPEC_ALIGN(16) _CONTEXT {
     DWORD64 LastExceptionFromRip;
 } CONTEXT, *PCONTEXT;
 typedef PCONTEXT LPCONTEXT;
-#elif _WIN32
+#elif defined(_WIN32)
 typedef struct _FLOATING_SAVE_AREA
 {
     ULONG ControlWord;
@@ -891,11 +893,18 @@ BOOL WINAPI AdjustTokenPrivileges(
 /* ========================================================================== */
 /* Segment Registers: */
 void                __debugbreak(void);
-#if _WIN64
+#if (defined(_WIN64) || defined(__x86_64__) || defined(__aarch64__) || defined(__arm64__)) && (defined(_M_AMD64) || defined(__x86_64__))
 unsigned char       __readgsbyte(unsigned long Offset);
 unsigned short      __readgsword(unsigned long Offset);
 unsigned long       __readgsdword(unsigned long Offset);
 unsigned __int64    __readgsqword(unsigned long Offset);
+#elif defined(_WIN64) || defined(__x86_64__) || defined(__aarch64__) || defined(__arm64__)
+/* ARM64 hosts have no GS segment register model compatible with this API. */
+static FORCEINLINE ULONG64 __readgsqword(unsigned long Offset)
+{
+    (void)Offset;
+    return 0;
+}
 #else
 unsigned char       __readfsbyte(unsigned long Offset);
 unsigned short      __readfsword(unsigned long Offset);
@@ -906,7 +915,7 @@ unsigned __int64    __readfsqword(unsigned long Offset);
 static NT_TIB *
 GetTib(void)
 {
-#if _WIN64
+#if defined(_WIN64) || defined(__x86_64__) || defined(__aarch64__) || defined(__arm64__)
     return (NT_TIB *)__readgsqword(0x30);
 #else
     return (NT_TIB *)__readfsdword(0x18);
