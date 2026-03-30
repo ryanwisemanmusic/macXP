@@ -5,7 +5,10 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/dos",
-                "${workspaceFolder}/lib/include/win32"
+                "${workspaceFolder}/lib/include/win32",
+                "${workspaceFolder}/third_party/SDL3/include",
+                "${workspaceFolder}/third_party/SDL_image/include",
+                "${workspaceFolder}/third_party/SDL_mixer/include"
             ],
             "defines": [],
             "compilerPath": "/opt/homebrew/opt/llvm@19/bin/clang",
