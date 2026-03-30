@@ -1,0 +1,14 @@
+_CloseToolhelp32Snapshot
+_CreateToolhelp32Snapshot
+_DllMain
+_Heap32First
+_Heap32ListFirst
+_Heap32ListNext
+_Heap32Next
+_Module32First
+_Module32Next
+_Process32First
+_Process32Next
+_Thread32First
+_Thread32Next
+_Toolhelp32ReadProcessMemory

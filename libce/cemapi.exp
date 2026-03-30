@@ -1,0 +1,10 @@
+_FreeProws
+_MAPIAllocateBuffer
+_MAPIAllocateMore
+_MAPIFreeBuffer
+_MAPIInitialize
+_MAPILogonEx
+_MAPIUninitialize
+_MAPI_GetStoreByName
+_MAPI_GetTotalAttachmentBytes
+_MAPI_SetAttachmentPath

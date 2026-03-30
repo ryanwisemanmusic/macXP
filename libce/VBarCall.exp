@@ -1,0 +1,17 @@
+_VoiceBar_CloseData
+_VoiceBar_Create
+_VoiceBar_GetMaxRecSize
+_VoiceBar_GetPlayFilename
+_VoiceBar_GetPlayLoc
+_VoiceBar_GetRecordingAddr
+_VoiceBar_GetRecordingLoc
+_VoiceBar_GetRecordingName
+_VoiceBar_IsPlaying
+_VoiceBar_IsRecording
+_VoiceBar_IsVoiceEnabled
+_VoiceBar_OpenFile
+_VoiceBar_OpenMem
+_VoiceBar_Play
+_VoiceBar_SetMaxRecSize
+_VoiceBar_SetNewDataLoc
+_VoiceBar_Stop

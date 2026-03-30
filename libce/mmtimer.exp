@@ -1,0 +1,8 @@
+_timeBeginPeriod
+_timeEndPeriod
+_timeGetDevCaps
+_timeGetHardwareFrequency
+_timeGetTime
+_timeGetTimeSinceInterrupt
+_timeKillEvent
+_timeSetEvent

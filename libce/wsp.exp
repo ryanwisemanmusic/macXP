@@ -1,0 +1,13 @@
+_WBXMLToTextXML
+_WBXMLToTextXMLGeneric
+_WSPAbortTransaction
+_WSPDecodeHeaders
+_WSPFreeBuffer
+_WSPGetData
+_WSPGetMIMEType
+_WSPOpenUrl
+_WSPSetGateway
+_WSPSetUserAgent
+_WSPSetUserProfile
+_WSPShutDown
+_WSPStartUp

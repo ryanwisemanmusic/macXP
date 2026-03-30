@@ -1,0 +1,15 @@
+_SmsClearMessageNotification
+_SmsClose
+_SmsGetBroadcastMsgRanges
+_SmsGetMessageSize
+_SmsGetMessageStatus
+_SmsGetPhoneNumber
+_SmsGetSMSC
+_SmsGetTime
+_SmsOpen
+_SmsReadMessage
+_SmsReceiveAllMessagesFromSIM
+_SmsSendMessage
+_SmsSetBroadcastMsgRanges
+_SmsSetMessageNotification
+_SmsSetSMSC

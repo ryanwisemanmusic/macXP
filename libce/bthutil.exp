@@ -1,0 +1,11 @@
+_BthAnswerBondingReq
+_BthDeviceChanged
+_BthGetCachedHardwareStatus
+_BthGetMode
+_BthInitiateBonding
+_BthSetLocalName
+_BthSetMode
+_DoInquiry
+_GetDeviceByAddr
+_GetDeviceByName
+_GetDeviceList
