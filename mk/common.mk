@@ -7,7 +7,7 @@ OBJ_DIR ?= $(BUILD_DIR)/obj
 DEP_DIR ?= $(BUILD_DIR)/dep
 
 # Baseline flags are intentionally conservative for portability.
-CPPFLAGS += -I. -Idos
+CPPFLAGS += -I. -Idos -Ilib/include/win32
 CFLAGS += -std=c17 -Wall -Wextra -Wpedantic -O2
 CXXFLAGS += -std=c++20 -Wall -Wextra -Wpedantic -O2
 LDFLAGS +=
