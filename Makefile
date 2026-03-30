@@ -3,6 +3,7 @@ include mk/common.mk
 # Each folder owns its own module file and contributes sources/flags.
 include app/module.mk
 include dos/module.mk
+include ui/module.mk
 
 .PHONY: all run clean print-config
 
