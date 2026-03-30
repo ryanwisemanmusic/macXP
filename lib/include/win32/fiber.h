@@ -20,6 +20,8 @@
     #include "dbghelp.h"
 #endif
 
+#include "win32defs.h"
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -55,7 +57,7 @@ LPVOID WINAPI ConvertThreadToFiberEx(
     LPVOID lpParameter,
     DWORD dwFlags);
 
-#ifdef _AMD64_
+#if defined(_AMD64_) || defined(WIN32_COMPAT_USE_GS) || defined(__aarch64__) || defined(__arm64__)
 __inline PVOID
 GetCurrentFiber(void)
 {
