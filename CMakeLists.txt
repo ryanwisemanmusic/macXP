@@ -63,6 +63,10 @@ target_link_libraries(kernel_test
         SDL3::SDL3
 )
 
+set_target_properties(kernel_test PROPERTIES
+    BUILD_RPATH "${CMAKE_BINARY_DIR}/third_party/sdl3"
+)
+
 target_compile_options(kernel_test
     PRIVATE
         -Wall
