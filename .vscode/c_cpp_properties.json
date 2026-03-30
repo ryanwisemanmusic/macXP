@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/dos"
+                "${workspaceFolder}/dos",
+                "${workspaceFolder}/lib/include/win32"
             ],
             "defines": [],
             "compilerPath": "/opt/homebrew/opt/llvm@19/bin/clang",
