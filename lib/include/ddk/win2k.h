@@ -35,6 +35,8 @@ extern "C" {
 
 #pragma pack(push,4)
 
+#ifndef _BUS_DATA_TYPE_DEFINED
+#define _BUS_DATA_TYPE_DEFINED
 typedef enum _BUS_DATA_TYPE {
   ConfigurationSpaceUndefined = -1,
   Cmos,
@@ -51,6 +53,7 @@ typedef enum _BUS_DATA_TYPE {
   SgiInternalConfiguration,
   MaximumBusDataType
 } BUS_DATA_TYPE, *PBUS_DATA_TYPE;
+#endif
 
 NTOSAPI
 VOID

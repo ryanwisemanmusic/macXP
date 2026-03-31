@@ -43,6 +43,8 @@ typedef enum _EMULATOR_PORT_ACCESS_TYPE {
 } EMULATOR_PORT_ACCESS_TYPE, *PEMULATOR_PORT_ACCESS_TYPE;
 
 
+#ifndef EMULATOR_ACCESS_ENTRY_DEFINED
+#define EMULATOR_ACCESS_ENTRY_DEFINED
 typedef struct _EMULATOR_ACCESS_ENTRY {
   ULONG  BasePort;
   ULONG  NumConsecutivePorts;
@@ -51,6 +53,7 @@ typedef struct _EMULATOR_ACCESS_ENTRY {
   UCHAR  StringSupport;
   PVOID  Routine;
 } EMULATOR_ACCESS_ENTRY, *PEMULATOR_ACCESS_ENTRY;
+#endif
 
 #ifndef VIDEO_ACCESS_RANGE_DEFINED /* also in video.h */
 #define VIDEO_ACCESS_RANGE_DEFINED
@@ -64,11 +67,14 @@ typedef struct _VIDEO_ACCESS_RANGE {
 } VIDEO_ACCESS_RANGE, *PVIDEO_ACCESS_RANGE;
 #endif
 
+#ifndef BANKED_SECTION_ROUTINE_DEFINED
+#define BANKED_SECTION_ROUTINE_DEFINED
 typedef VOID DDKAPI
 (*PBANKED_SECTION_ROUTINE)(
   /*IN*/ ULONG  ReadBank,
   /*IN*/ ULONG  WriteBank,
   /*IN*/ PVOID  Context);
+#endif
 
 #ifdef __cplusplus
 }
