@@ -33,6 +33,11 @@
 #error "A C++ compiler is required to include gdiplusheaders.h."
 #endif
 
+#include "gdiplus_defs.h"
+#include <basetyps.h>
+#include "gdiplusenums.h"
+#include "gdiplusflat.h"
+
 /*
  * Note: Virtual inline functions (dtors, Clone()) are implemented here: If
  * these were defined outside class scope, the compiler would always generate
