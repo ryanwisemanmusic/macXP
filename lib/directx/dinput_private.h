@@ -72,6 +72,8 @@ extern GUID GUID_POV;
 
 #if defined (__WATCOMC__)
 #define ATTRIBUTE_TEXT_SECTION __based( __segname( "_CODE" ) )
+#elif defined(__APPLE__)
+#define ATTRIBUTE_TEXT_SECTION
 #elif defined (__GNUC__)
 #define ATTRIBUTE_TEXT_SECTION  __attribute__ ((section(".text")))
 #else

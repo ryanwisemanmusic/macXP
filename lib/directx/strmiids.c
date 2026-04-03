@@ -15,6 +15,7 @@
 #include <windows.h>
 //You removed the else here so in case this gives you shit, then you need to configure preprocessor setup better
 #include <basetyps.h>
+#include <initguid.h>
 #endif 
 
 DEFINE_GUID(CLSID_AMAudioData,0xf2468580,0xaf8a,0x11d0,0x82,0x12,0x00,0xc0,0x4f,0xc3,0x2c,0x45);

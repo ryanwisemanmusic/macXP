@@ -15,6 +15,7 @@
 #include <windows.h>
 //You removed the else here so in case this gives you shit, then you need to configure preprocessor setup better
 #include <basetyps.h>
+#include <initguid.h>
 #endif 
 
 DEFINE_GUID(CLSID_CDirect3DRM,0x4516ec41,0x8f20,0x11d0,0x9b,0x6d,0x0,0x0,0xc0,0x78,0x1b,0xc3);

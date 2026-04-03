@@ -15,6 +15,7 @@
 #include <windows.h>
 //You removed the else here so in case this gives you shit, then you need to configure preprocessor setup better
 #include <basetyps.h>
+#include <initguid.h>
 #endif 
 
 DEFINE_GUID(BUSID_SoftwareDeviceEnumerator,0x4747b320,0x62ce,0x11cf,0xa5,0xd6,0x28,0xdb,0x4,0xc1,0,0);

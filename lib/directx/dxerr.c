@@ -14,6 +14,19 @@
 
 #include <windows.h>
 
+int wsprintfA(LPSTR, LPCSTR, ...);
+int wsprintfW(LPWSTR, LPCWSTR, ...);
+
+#ifdef UNICODE
+#define wsprintf wsprintfW
+#define OutputDebugString OutputDebugStringW
+#define MessageBox MessageBoxW
+#else
+#define wsprintf wsprintfA
+#define OutputDebugString OutputDebugStringA
+#define MessageBox MessageBoxA
+#endif
+
 #ifndef DXERROR
 #define DXERROR(v,n,d) {v, TEXT(n), TEXT(d)},
 #define DXERRORLAST(v,n,d) {v, TEXT(n), TEXT(d)}
@@ -770,4 +783,3 @@ HRESULT __stdcall DXTrace(char *strFile, DWORD dwLine, HRESULT hr,
 	return hr;
 #endif
 }
-

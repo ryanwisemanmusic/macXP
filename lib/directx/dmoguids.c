@@ -15,6 +15,7 @@
 #include <windows.h>
 //You removed the else here so in case this gives you shit, then you need to configure preprocessor setup better
 #include <basetyps.h>
+#include <initguid.h>
 #endif 
 
 DEFINE_GUID(CLSID_DMOFilterCategory,0xbcd5796c,0xbd52,0x4d30,0xab,0x76,0x70,0xf9,0x75,0xb8,0x91,0x99);
