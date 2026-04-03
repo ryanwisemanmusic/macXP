@@ -110,7 +110,8 @@
 # warning _GUID_DEFINED is deprecated, use GUID_DEFINED instead
 #endif
 
-#if ! (defined _GUID_DEFINED || defined GUID_DEFINED) /* also defined in winnt.h */
+#if ! (defined _GUID_DEFINED || defined GUID_DEFINED || \
+       defined WINDOWS_H || defined _INC_WINDOWS) /* also defined in winnt.h */
 #define GUID_DEFINED
 typedef struct _GUID
 {
