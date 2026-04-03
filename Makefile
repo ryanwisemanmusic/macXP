@@ -5,7 +5,7 @@ include app/module.mk
 include dos/module.mk
 include ui/module.mk
 
-.PHONY: all run clean print-config deps libusb ffmpeg sdl3
+.PHONY: all run clean print-config deps libusb ffmpeg sdl3 check-gdiplus-cpp check-tools check-lib check-libce check-repo-compile
 
 SDL3_CMAKE_GENERATOR ?= Unix Makefiles
 SDL3_BUILD_DIR ?= $(BUILD_DIR)/sdl3
@@ -30,11 +30,31 @@ sdl3:
 	@PKG_CONFIG_PATH="$(DEPS_PKGCONFIG):$$PKG_CONFIG_PATH" cmake -S $(SDL3_ROOT) -B $(SDL3_BUILD_DIR) -G "$(SDL3_CMAKE_GENERATOR)" -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF -DSDL_TEST=OFF
 	@cmake --build $(SDL3_BUILD_DIR) --config Release
 
+check-gdiplus-cpp:
+	@chmod +x ./tools/check_gdiplus_cpp.sh
+	@./tools/check_gdiplus_cpp.sh
+
+check-tools:
+	@chmod +x ./tools/check_repo_compile.sh
+	@./tools/check_repo_compile.sh tools
+
+check-lib:
+	@chmod +x ./tools/check_repo_compile.sh
+	@./tools/check_repo_compile.sh lib
+
+check-libce:
+	@chmod +x ./tools/check_repo_compile.sh
+	@./tools/check_repo_compile.sh libce
+
+check-repo-compile:
+	@chmod +x ./tools/check_repo_compile.sh
+	@./tools/check_repo_compile.sh all
+
 $(TARGET): $(OBJ_FILES)
 	$(call ensure-dir,$@)
 	$(LINKER) $(OBJ_FILES) $(LDFLAGS) $(LDLIBS) -o $@
 
-all: deps sdl3 $(TARGET)
+all: deps sdl3 check-lib check-libce $(TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
