@@ -24,7 +24,7 @@ LIBUSB_HEADER ?= $(firstword $(wildcard $(LIBUSB_ROOT)/libusb/libusb.h))
 FFMPEG_HEADER ?= $(firstword $(wildcard $(FFMPEG_ROOT)/libavcodec/avcodec.h))
 
 # Baseline flags are intentionally conservative for portability.
-CPPFLAGS += -I. -Idos -Ilib/include/win32
+CPPFLAGS += -I. -Idos -Ilib/include -Ilib/include/win32 -Ilibce/include
 CFLAGS += -std=c17 -Wall -Wextra -Wpedantic -O2
 CXXFLAGS += -std=c++20 -Wall -Wextra -Wpedantic -O2
 LDFLAGS +=
