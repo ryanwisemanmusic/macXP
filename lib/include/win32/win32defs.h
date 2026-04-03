@@ -386,6 +386,7 @@ typedef unsigned int *PUINT;
 typedef unsigned long COLORREF;
 #endif
 
+#if !defined(WINDOWS_H) && !defined(_INC_WINDOWS)
 #ifndef _POINT_DEFINED
 #define _POINT_DEFINED
 typedef struct tagPOINT { LONG x; LONG y; } POINT, *PPOINT;
@@ -425,6 +426,7 @@ typedef INT_PTR (CALLBACK *DLGPROC)(HWND, UINT, WPARAM, LPARAM);
 #ifndef _LPSTREAM_DEFINED
 #define _LPSTREAM_DEFINED
 typedef void *LPSTREAM;
+#endif
 #endif
 #endif
 
