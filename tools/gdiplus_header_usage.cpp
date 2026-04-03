@@ -1,0 +1,35 @@
+#include "lib/include/win32/windef.h"
+#include "lib/include/win32/wingdi.h"
+
+#include "lib/include/gdiplus/gdiplus.h"
+#include "lib/include/gdiplus/gdiplus_defs.h"
+#include "lib/include/gdiplus/gdiplusbase.h"
+#include "lib/include/gdiplus/gdiplusbrush.h"
+#include "lib/include/gdiplus/gdipluscolor.h"
+#include "lib/include/gdiplus/gdipluscolormatrix.h"
+#include "lib/include/gdiplus/gdipluseffects.h"
+#include "lib/include/gdiplus/gdiplusenums.h"
+#include "lib/include/gdiplus/gdiplusflat.h"
+#include "lib/include/gdiplus/gdiplusgraphics.h"
+#include "lib/include/gdiplus/gdiplusheaders.h"
+#include "lib/include/gdiplus/gdiplusimagecodec.h"
+#include "lib/include/gdiplus/gdiplusimaging.h"
+#include "lib/include/gdiplus/gdiplusinit.h"
+#include "lib/include/gdiplus/gdiplusmem.h"
+#include "lib/include/gdiplus/gdiplusmetaheader.h"
+#include "lib/include/gdiplus/gdipluspixelformats.h"
+#include "lib/include/gdiplus/gdiplusstringformat.h"
+#include "lib/include/gdiplus/gdiplustypes.h"
+#include "lib/include/gdiplus/gdiplusgpstubs.h"
+#include "lib/include/gdiplus/gdiplusimageattributes.h"
+#include "lib/include/gdiplus/gdiplusimpl.h"
+#include "lib/include/gdiplus/gdipluslinecaps.h"
+#include "lib/include/gdiplus/gdiplusmatrix.h"
+#include "lib/include/gdiplus/gdiplusmetafile.h"
+#include "lib/include/gdiplus/gdipluspath.h"
+#include "lib/include/gdiplus/gdipluspen.h"
+
+int gdiplus_header_usage_anchor(void)
+{
+    return 0;
+}
