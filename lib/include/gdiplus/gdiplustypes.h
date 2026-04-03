@@ -26,6 +26,9 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+#include "gdiplusenums.h"
+
 #define WINGDIPAPI __stdcall
 #define GDIPCONST const
 

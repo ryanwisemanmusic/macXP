@@ -26,7 +26,8 @@
 #pragma GCC system_header
 #endif
 
-
+#include "gdiplus_defs.h"
+#include "gdiplusenums.h"
 /*
  * FIXME: is 1 the correct value for GDIP_EMFPLUSFLAGS_DISPLAY? This number
  * has been determined by calling Metafile::GetMetafileHeader() on a EMF+

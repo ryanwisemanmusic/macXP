@@ -26,6 +26,8 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+
 typedef enum BrushType {
 	BrushTypeSolidColor = 0,
 	BrushTypeHatchFill = 1,

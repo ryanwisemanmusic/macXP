@@ -26,6 +26,12 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+#include "gdipluscolormatrix.h"
+#include "gdiplusenums.h"
+#include <basetyps.h>
+#include "gdipluscolor.h"
+
 #ifdef __cplusplus
 namespace DllExports {
 extern "C" {

@@ -26,6 +26,9 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+#include "gdiplusflat.h"
+
 static __inline__ GpStatus GetImageDecoders(UINT numDecoders, UINT size,
 		ImageCodecInfo *decoders)
 {

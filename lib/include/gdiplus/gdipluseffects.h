@@ -26,6 +26,9 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+#include "gdipluscolormatrix.h"
+
 typedef enum CurveAdjustments {
 	AdjustExposure = 0,
 	AdjustDensity = 1,

@@ -26,6 +26,8 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+
 typedef enum ColorChannelFlags {
 	ColorChannelFlagsC = 0,
 	ColorChannelFlagsM = 1,

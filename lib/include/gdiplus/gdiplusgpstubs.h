@@ -26,6 +26,8 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+
 typedef Point GpPoint;
 typedef PointF GpPointF;
 typedef Rect GpRect;

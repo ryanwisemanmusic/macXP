@@ -31,6 +31,8 @@ namespace DllExports {
 extern "C" {
 #endif
 
+#include "gdiplus_defs.h"
+
 VOID* WINGDIPAPI GdipAlloc(size_t);
 VOID WINGDIPAPI GdipFree(VOID*);
 

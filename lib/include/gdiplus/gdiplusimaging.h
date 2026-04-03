@@ -20,6 +20,7 @@
  *
  */
 
+#include <basetyps.h>
 #ifndef __GDIPLUS_IMAGING_H
 #define __GDIPLUS_IMAGING_H
 #if __GNUC__ >=3

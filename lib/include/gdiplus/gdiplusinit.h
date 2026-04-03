@@ -26,6 +26,8 @@
 #pragma GCC system_header
 #endif
 
+#include "gdiplus_defs.h"
+
 typedef struct GdiplusStartupInput {
 	UINT32 GdiplusVersion;
 	DebugEventProc DebugEventCallback;
