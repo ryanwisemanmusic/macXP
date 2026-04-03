@@ -3,13 +3,15 @@
         {
             "name": "Mac",
             "includePath": [
-                "${default}",
-                "${workspaceFolder}/dos",
+                "${workspaceFolder}/lib/include",
                 "${workspaceFolder}/lib/include/win32",
+                "${workspaceFolder}/lib/include/directx",
+                "${workspaceFolder}/dos",
                 "${workspaceFolder}/third_party/SDL3/include",
                 "${workspaceFolder}/third_party/SDL_image/include",
                 "${workspaceFolder}/third_party/SDL_mixer/include",
-                "${workspaceFolder}/lib/include"
+                "${workspaceFolder}",
+                "${default}"
             ],
             "defines": [],
             "compilerPath": "/opt/homebrew/opt/llvm@19/bin/clang",
