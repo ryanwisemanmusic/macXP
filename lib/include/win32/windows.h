@@ -25,6 +25,14 @@ extern "C" {
 /* size_t */
 #include <stddef.h>
 
+#if !defined(_MSC_VER) && !defined(_ISO_VOLATILE_STORE8_DEFINED)
+#define _ISO_VOLATILE_STORE8_DEFINED
+static __inline__ void __iso_volatile_store8(volatile char *dst, char value)
+{
+    *dst = value;
+}
+#endif
+
 
 /*
  * Windows Version requirements: Vista
@@ -42,6 +50,14 @@ extern "C" {
 
 #ifndef __cdecl
 #define __cdecl
+#endif
+
+#ifndef PASCAL
+#define PASCAL __stdcall
+#endif
+
+#ifndef DECLARE_STDCALL_P
+#define DECLARE_STDCALL_P(type) __stdcall type
 #endif
 
 #ifndef __forceinline
@@ -226,7 +242,7 @@ typedef float               FLOAT;
 typedef unsigned long       DWORD;
 #ifndef HAVE_WCHAR_T
 #define HAVE_WCHAR_T
-#if !defined(__cplusplus)
+#if !defined(__cplusplus) && !defined(__WCHAR_TYPE__)
 typedef unsigned short      wchar_t;
 #endif
 #endif
@@ -260,6 +276,8 @@ typedef void *              LPVOID;
 typedef BOOL *              PBOOL;
 typedef BOOL *              LPBOOL;
 typedef WORD *              PWORD;
+typedef int *               PINT;
+typedef int *               LPINT;
 typedef LONG *              PLONG;
 typedef LONG *              LPLONG;
 typedef DWORD *             PDWORD;
@@ -443,7 +461,7 @@ typedef struct _GUID {
     unsigned short Data2;
     unsigned short Data3;
     unsigned char  Data4[8];
-} GUID;
+} GUID, *LPGUID;
 
 #if defined(__cplusplus)
 }
@@ -2639,7 +2657,16 @@ extern "C" {
 
 
 /* Icons / Cursor: */
-#define MAKEINTRESOURCE(res)        ((ULONG_PTR)(USHORT)res)
+#define MAKEINTRESOURCEA(res)       ((LPSTR)((ULONG_PTR)(USHORT)(res)))
+#define MAKEINTRESOURCEW(res)       ((LPWSTR)((ULONG_PTR)(USHORT)(res)))
+#ifdef UNICODE
+#define MAKEINTRESOURCE(res)        MAKEINTRESOURCEW(res)
+#else
+#define MAKEINTRESOURCE(res)        MAKEINTRESOURCEA(res)
+#endif
+#ifndef MAKEINTATOM
+#define MAKEINTATOM(i)              ((LPTSTR)((ULONG_PTR)(USHORT)(i)))
+#endif
 #define IDI_APPLICATION             MAKEINTRESOURCE(32512)
 #define IDC_ARROW                   MAKEINTRESOURCE(32512)
 
@@ -2662,6 +2689,14 @@ HGDIOBJ WINAPI GetStockObject(
         int     fnObject);
 HCURSOR WINAPI SetCursor(
         HCURSOR hCursor);
+
+#ifdef UNICODE
+#define LoadCursor LoadCursorW
+#define LoadIcon LoadIconW
+#else
+#define LoadCursor LoadCursorA
+#define LoadIcon LoadIconA
+#endif
 
 
 #if defined(__cplusplus)
@@ -3087,6 +3122,7 @@ typedef UINT MMRESULT;
 #define FORMAT_MESSAGE_IGNORE_INSERTS   0x00000200
 #define FORMAT_MESSAGE_FROM_HMODULE     0x00000800
 #define FORMAT_MESSAGE_FROM_STRING      0x00000400
+#define FORMAT_MESSAGE_MAX_WIDTH_MASK   0x000000FF
 
 /* Language ID: */
 #define MAKELANGID(p, s)                ((((WORD)(s)) << 10) | (WORD  )(p))
@@ -3306,10 +3342,16 @@ MMRESULT WINAPI timeEndPeriod(UINT uPeriod);
 
 /* ========================================================================== */
 /* DLL Functions: */
+struct _OSVERSIONINFOA;
+struct _OSVERSIONINFOW;
 HMODULE WINAPI LoadLibraryA(
         LPCSTR lpFileName);
 HMODULE WINAPI LoadLibraryW(
         LPCWSTR lpFileName);
+BOOL WINAPI GetVersionExA(
+        struct _OSVERSIONINFOA *lpVersionInformation);
+BOOL WINAPI GetVersionExW(
+        struct _OSVERSIONINFOW *lpVersionInformation);
 HMODULE WINAPI LoadLibraryExA(
         LPCSTR lpLibFileName,
         HANDLE hFile,
@@ -3702,8 +3744,12 @@ typedef struct _JOBOBJECT_EXTENDED_LIMIT_INFORMATION {
 
 /* ========================================================================== */
 /* Process: */
+/* These are intentionally omitted by default to avoid linkage conflicts with
+        static inline definitions from kfuncs.h in mixed include-order scenarios. */
+#if defined(WIN32_DECLARE_KFUNCS_COMPAT_PROTOTYPES)
 HANDLE WINAPI GetCurrentProcess(void);
 DWORD WINAPI GetCurrentProcessId(void);
+#endif
 void WINAPI ExitProcess(UINT uExitCode);
 HANDLE WINAPI OpenProcess(
         DWORD                   dwDesiredAccess,
@@ -3934,6 +3980,26 @@ typedef struct _DISPLAY_DEVICEW {
 } DISPLAY_DEVICEW, *PDISPLAY_DEVICEW;
 
 /* Version: */
+#ifndef VER_PLATFORM_WIN32_WINDOWS
+#define VER_PLATFORM_WIN32_WINDOWS 1
+#endif
+
+typedef struct _OSVERSIONINFOA {
+    DWORD dwOSVersionInfoSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformId;
+    CHAR  szCSDVersion[128];
+} OSVERSIONINFOA, *POSVERSIONINFOA, *LPOSVERSIONINFOA;
+typedef struct _OSVERSIONINFOW {
+    DWORD dwOSVersionInfoSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformId;
+    WCHAR szCSDVersion[128];
+} OSVERSIONINFOW, *POSVERSIONINFOW, *LPOSVERSIONINFOW;
 typedef struct _OSVERSIONINFOEXA {
     DWORD dwOSVersionInfoSize;
     DWORD dwMajorVersion;
@@ -4246,6 +4312,14 @@ BOOL WINAPI EnumDisplayDevicesW(
 
 /* ========================================================================== */
 /* Registry: */
+LONG WINAPI RegOpenKeyA(
+    HKEY    hKey,
+    LPCSTR  lpSubKey,
+    PHKEY   phkResult);
+LONG WINAPI RegOpenKeyW(
+    HKEY    hKey,
+    LPCWSTR lpSubKey,
+    PHKEY   phkResult);
 LONG WINAPI RegOpenKeyExA(
     HKEY    hKey,
     LPCSTR  lpSubKey,
@@ -4553,8 +4627,10 @@ HANDLE WINAPI CreateThread(
         LPVOID lpParameter,
         DWORD dwCreationFlags,
         LPDWORD lpThreadId);
+#if defined(WIN32_DECLARE_KFUNCS_COMPAT_PROTOTYPES)
 HANDLE WINAPI GetCurrentThread(void);
 DWORD WINAPI GetCurrentThreadId(void);
+#endif
 DWORD_PTR WINAPI SetThreadAffinityMask(
         HANDLE hThread,
         DWORD_PTR dwThreadAffinityMask);
@@ -4653,14 +4729,16 @@ HANDLE WINAPI OpenSemaphoreW(
 
 /* ========================================================================== */
 /* Thread-Local Storage: */
+#if defined(WIN32_DECLARE_KFUNCS_COMPAT_PROTOTYPES)
 DWORD WINAPI TlsAlloc(void);
 BOOL WINAPI TlsSetValue(
         DWORD   dwTlsIndex,
         LPVOID  lpTlsValue);
 LPVOID WINAPI TlsGetValue(
         DWORD   dwTlsIndex);
-DWORD WINAPI TlsFree(
+BOOL WINAPI TlsFree(
         DWORD   dwTlsIndex);
+#endif
 
 typedef void(WINAPI *PFLS_CALLBACK_FUNCTION)(PVOID);
 DWORD WINAPI FlsAlloc(PFLS_CALLBACK_FUNCTION lpCallback);
@@ -4841,6 +4919,11 @@ extern "C" {
 #define CS_HREDRAW                      0x0002
 #define CS_OWNDC                        0x0020
 #define CS_CLASSDC                      0x0040
+#define CS_PARENTDC                     0x0080
+#define CS_SAVEBITS                     0x0800
+
+/* Extended Window Styles: */
+#define WS_EX_TOPMOST                   0x00000008L
 
 /* Messages: */
 #define PM_NOREMOVE                 0x0000
@@ -4865,8 +4948,17 @@ extern "C" {
 #define WM_ERASEBKGND               0x0014
 #define WM_SYSCOLORCHANGE           0x0015
 #define WM_SHOWWINDOW               0x0018
+#define WM_ACTIVATEAPP              0x001C
+#define WM_SETCURSOR                0x0020
 #define WM_WININICHANGE             0x001A
+#define WM_TIMER                    0x0113
+#define WM_MOUSEMOVE                0x0200
+#define WM_LBUTTONDOWN              0x0201
+#define WM_RBUTTONDOWN              0x0204
+#define WM_MBUTTONDOWN              0x0207
+#define WM_APP                      0x8000
 #define WM_NCDESTROY                0x0082
+#define WM_NCACTIVATE               0x0086
 
 #define WM_KEYDOWN                  0x0100
 #define WM_KEYUP                    0x0101
@@ -4885,7 +4977,17 @@ extern "C" {
 #define WA_ACTIVE                   1
 #define WA_CLICKACTIVE              2
 
+#define SC_NEXTWINDOW               0xF040
+#define SC_PREVWINDOW               0xF050
+#define SC_CLOSE                    0xF060
 #define SC_KEYMENU                  0xF100
+#define SC_SCREENSAVE               0xF140
+
+/* System Metrics: */
+#define SM_XVIRTUALSCREEN           76
+#define SM_YVIRTUALSCREEN           77
+#define SM_CXVIRTUALSCREEN          78
+#define SM_CYVIRTUALSCREEN          79
 
 /* Events: */
 #define EVENT_ALL_ACCESS            0x1F0003
@@ -4950,6 +5052,7 @@ typedef struct _RECT {
 
 /* Window: */
 typedef LRESULT (CALLBACK *WNDPROC)(HWND, UINT, WPARAM, LPARAM);
+typedef BOOL (CALLBACK *DLGPROC)(HWND, UINT, WPARAM, LPARAM);
 typedef struct tagWNDCLASS {
     UINT        style;
     WNDPROC     lpfnWndProc;
@@ -4995,7 +5098,7 @@ typedef struct tagWNDCLASSEXW {
 typedef struct tagPOINT {
   LONG x;
   LONG y;
-} POINT, *PPOINT;
+} POINT, *PPOINT, *LPPOINT;
 
 typedef struct tagMSG {
     HWND        hwnd;
@@ -5019,6 +5122,28 @@ int WINAPI MessageBoxW(
         LPCWSTR lpText,
         LPCWSTR lpCaption,
         UINT    uType);
+int WINAPI DialogBoxA(
+        HINSTANCE hInstance,
+        LPCSTR    lpTemplateName,
+        HWND      hWndParent,
+        DLGPROC   lpDialogFunc);
+int WINAPI DialogBoxW(
+        HINSTANCE hInstance,
+        LPCWSTR   lpTemplateName,
+        HWND      hWndParent,
+        DLGPROC   lpDialogFunc);
+int WINAPI DialogBoxParamA(
+        HINSTANCE hInstance,
+        LPCSTR    lpTemplateName,
+        HWND      hWndParent,
+        DLGPROC   lpDialogFunc,
+        LPARAM    dwInitParam);
+int WINAPI DialogBoxParamW(
+        HINSTANCE hInstance,
+        LPCWSTR   lpTemplateName,
+        HWND      hWndParent,
+        DLGPROC   lpDialogFunc,
+        LPARAM    dwInitParam);
 ATOM WINAPI RegisterClassA(
         WNDCLASS *lpWndClass);
 ATOM WINAPI RegisterClassW(
@@ -5076,6 +5201,26 @@ LRESULT WINAPI DefWindowProcW(
         LPARAM  lParam);
 BOOL WINAPI DestroyWindow(
         HWND    hWnd);
+BOOL WINAPI PostMessageA(
+        HWND    hWnd,
+        UINT    Msg,
+        WPARAM  wParam,
+        LPARAM  lParam);
+BOOL WINAPI PostMessageW(
+        HWND    hWnd,
+        UINT    Msg,
+        WPARAM  wParam,
+        LPARAM  lParam);
+LRESULT WINAPI SendMessageA(
+        HWND    hWnd,
+        UINT    Msg,
+        WPARAM  wParam,
+        LPARAM  lParam);
+LRESULT WINAPI SendMessageW(
+        HWND    hWnd,
+        UINT    Msg,
+        WPARAM  wParam,
+        LPARAM  lParam);
 BOOL WINAPI AdjustWindowRectEx(
         LPRECT  lpRect,
         DWORD   dwStyle,
@@ -5084,8 +5229,14 @@ BOOL WINAPI AdjustWindowRectEx(
 BOOL WINAPI GetClientRect(
         HWND    hWnd,
         LPRECT  lpRect);
+BOOL WINAPI GetCursorPos(
+        LPPOINT lpPoint);
+HWND WINAPI GetForegroundWindow(
+        void);
 int WINAPI GetSystemMetrics(
         int     nIndex);
+BOOL WINAPI IsWindow(
+        HWND hWnd);
 BOOL WINAPI SetWindowPos(
         HWND    hWnd,
         HWND    hWndInsertAfter,
@@ -5109,6 +5260,16 @@ BOOL WINAPI PeekMessageW(
         UINT    wMsgFilterMin,
         UINT    wMsgFilterMax,
         UINT    wRemoveMsg);
+BOOL WINAPI GetMessageA(
+        LPMSG   lpMsg,
+        HWND    hWnd,
+        UINT    wMsgFilterMin,
+        UINT    wMsgFilterMax);
+BOOL WINAPI GetMessageW(
+        LPMSG   lpMsg,
+        HWND    hWnd,
+        UINT    wMsgFilterMin,
+        UINT    wMsgFilterMax);
 BOOL WINAPI TranslateMessage(
         const MSG *lpMsg);
 LRESULT WINAPI DispatchMessageA(
@@ -5144,6 +5305,63 @@ BOOL WINAPI SetEvent(
         HANDLE  hEvent);
 SHORT WINAPI GetKeyState(
         int     nVirtKey);
+
+BOOL WINAPI SystemParametersInfoA(
+        UINT    uiAction,
+        UINT    uiParam,
+        PVOID   pvParam,
+        UINT    fWinIni);
+BOOL WINAPI SystemParametersInfoW(
+        UINT    uiAction,
+        UINT    uiParam,
+        PVOID   pvParam,
+        UINT    fWinIni);
+
+#ifndef SPI_SETSCREENSAVERRUNNING
+#define SPI_SETSCREENSAVERRUNNING 0x0061
+#endif
+
+#ifdef UNICODE
+typedef OSVERSIONINFOW OSVERSIONINFO, *POSVERSIONINFO, *LPOSVERSIONINFO;
+typedef OSVERSIONINFOEXW OSVERSIONINFOEX, *POSVERSIONINFOEX, *LPOSVERSIONINFOEX;
+#define GetVersionEx GetVersionExW
+#define LoadLibrary LoadLibraryW
+#define RegOpenKey RegOpenKeyW
+#define RegQueryValueEx RegQueryValueExW
+#define DialogBox DialogBoxW
+#define DialogBoxParam DialogBoxParamW
+#define RegisterClass RegisterClassW
+#define CreateWindowEx CreateWindowExW
+#define DefWindowProc DefWindowProcW
+#define DispatchMessage DispatchMessageW
+#define GetMessage GetMessageW
+#define LoadCursor LoadCursorW
+#define LoadIcon LoadIconW
+#define MessageBox MessageBoxW
+#define PostMessage PostMessageW
+#define SendMessage SendMessageW
+#define SystemParametersInfo SystemParametersInfoW
+#else
+typedef OSVERSIONINFOA OSVERSIONINFO, *POSVERSIONINFO, *LPOSVERSIONINFO;
+typedef OSVERSIONINFOEXA OSVERSIONINFOEX, *POSVERSIONINFOEX, *LPOSVERSIONINFOEX;
+#define GetVersionEx GetVersionExA
+#define LoadLibrary LoadLibraryA
+#define RegOpenKey RegOpenKeyA
+#define RegQueryValueEx RegQueryValueExA
+#define DialogBox DialogBoxA
+#define DialogBoxParam DialogBoxParamA
+#define RegisterClass RegisterClassA
+#define CreateWindowEx CreateWindowExA
+#define DefWindowProc DefWindowProcA
+#define DispatchMessage DispatchMessageA
+#define GetMessage GetMessageA
+#define LoadCursor LoadCursorA
+#define LoadIcon LoadIconA
+#define MessageBox MessageBoxA
+#define PostMessage PostMessageA
+#define SendMessage SendMessageA
+#define SystemParametersInfo SystemParametersInfoA
+#endif
 
 #if defined(__cplusplus)
 }

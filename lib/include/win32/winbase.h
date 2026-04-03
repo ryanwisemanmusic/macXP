@@ -1674,7 +1674,7 @@ WINBASEAPI DWORD WINAPI GetCurrentDirectoryA(DWORD,LPSTR);
 WINBASEAPI DWORD WINAPI GetCurrentDirectoryW(DWORD,LPWSTR);
 WINBASEAPI BOOL WINAPI GetCurrentHwProfileA(LPHW_PROFILE_INFOA);
 WINBASEAPI BOOL WINAPI GetCurrentHwProfileW(LPHW_PROFILE_INFOW);
-#ifndef _WIN32_WCE
+#if !defined(_WIN32_WCE) && !defined(_W32API_KFUNCS_H_)
 /* These are defined in kfuncs.h.  */
 WINBASEAPI HANDLE WINAPI GetCurrentProcess(void);
 WINBASEAPI DWORD WINAPI GetCurrentProcessId(void);
@@ -1961,7 +1961,10 @@ WINBASEAPI BOOL WINAPI InitializeSid (PSID,PSID_IDENTIFIER_AUTHORITY,BYTE);
 /* CAREFUL: These are exported from ntoskrnl.exe and declared in winddk.h
    as __fastcall functions, but are  exported from kernel32.dll as __stdcall */
 #if (_WIN32_WINNT >= 0x0501)
-WINBASEAPI VOID WINAPI InitializeSListHead(PSLIST_HEADER);
+#ifdef InitializeSListHead
+#undef InitializeSListHead
+#endif
+WINBASEAPI VOID WINAPI InitializeSListHead(PSLIST_HEADER SListHead);
 #endif
 #ifndef __INTERLOCKED_DECLARED
 #define __INTERLOCKED_DECLARED
@@ -2000,11 +2003,11 @@ WINBASEAPI BOOL IsProcessInJob(HANDLE,HANDLE,PBOOL);
 WINBASEAPI BOOL WINAPI IsProcessorFeaturePresent(DWORD);
 WINBASEAPI BOOL WINAPI IsSystemResumeAutomatic(void);
 WINBASEAPI BOOL WINAPI IsTextUnicode(PCVOID,int,LPINT);
-#if (_WIN32_WINNT >= 0x0500)
-WINBASEAPI BOOL WINAPI IsTokenRestricted(HANDLE);
+#if (_WIN32_WINNT >= 0x0501)
+PSLIST_ENTRY WINAPI InterlockedFlushSList(PSLIST_HEADER ListHead);
 #endif
-WINBASEAPI BOOL WINAPI IsValidAcl(PACL);
-WINBASEAPI BOOL WINAPI IsValidSecurityDescriptor(PSECURITY_DESCRIPTOR);
+PSLIST_ENTRY WINAPI InterlockedPopEntrySList(PSLIST_HEADER ListHead);
+PSLIST_ENTRY WINAPI InterlockedPushEntrySList(PSLIST_HEADER ListHead, PSLIST_ENTRY ListEntry);
 WINBASEAPI BOOL WINAPI IsValidSid(PSID);
 #if (_WIN32_WINNT >= 0x0501)
 WINBASEAPI BOOL WINAPI IsWow64Process(HANDLE,PBOOL);
@@ -2308,7 +2311,7 @@ WINBASEAPI BOOL WINAPI TzSpecificLocalTimeToSystemTime(LPTIME_ZONE_INFORMATION,L
 #endif
 WINBASEAPI BOOL WINAPI SystemTimeToTzSpecificLocalTime(LPTIME_ZONE_INFORMATION,LPSYSTEMTIME,LPSYSTEMTIME);
 WINBASEAPI BOOL WINAPI TerminateThread(HANDLE,DWORD);
-#ifndef _WIN32_WCE
+#if !defined(_WIN32_WCE) && !defined(_W32API_KFUNCS_H_)
 /* In kfuncs.h */
 WINBASEAPI DWORD WINAPI TlsAlloc(VOID);
 WINBASEAPI BOOL WINAPI TlsFree(DWORD);
