@@ -29,6 +29,37 @@ if not os.isdir(ffmpeg_root) then
     raise("FFmpeg source folder not found: " .. ffmpeg_root)
 end
 
+local required_lib_files = {
+    "lib/Makefile.in",
+    "lib/ddk/Makefile.in",
+    "lib/directx/Makefile.in",
+    "lib/include/ddk",
+    "lib/include/directx",
+    "lib/include/gdiplus",
+    "lib/include/GL",
+    "lib/include/win32",
+    "lib/res.rc",
+    "lib/vfw32.mri"
+}
+local required_libce_files = {
+    "libce/Makefile.in",
+    "libce/directx/Makefile.in",
+    "libce/res.rc"
+}
+for _, file in ipairs(required_lib_files) do
+    if not os.isfile(file) then
+        raise("Required lib file not found: " .. file)
+    end
+end
+for _, file in ipairs(required_libce_files) do
+    if not os.isfile(file) then
+        raise("Required libce file not found: " .. file)
+    end
+end
+if not os.isfile("lib/include/win32/make.mk") and not os.isfile("lib/include/win32/Makefile") then
+    raise("Required win32 include make script not found: expected lib/include/win32/make.mk or lib/include/win32/Makefile")
+end
+
 local sdl3_header = path.join(sdl3_root, "include", "SDL3", "SDL.h")
 if not os.isfile(sdl3_header) then
     raise("SDL3 header not found: " .. sdl3_header)
@@ -61,7 +92,7 @@ target("kernel_test")
     add_files("app/*.c")
     add_files("ui/window/*.c")
     add_files("lib/include/win32/win32functions.c")
-    add_includedirs(".", "dos", "lib/include/win32")
+    add_includedirs(".", "dos", "lib/include", "lib/include/ddk", "lib/include/directx", "lib/include/gdiplus", "lib/include/GL", "lib/include/win32", "libce/include")
     add_includedirs(path.join(sdl3_root, "include"))
     add_includedirs(path.join(sdl_image_root, "include"))
     add_includedirs(path.join(sdl_mixer_root, "include"))
@@ -69,3 +100,31 @@ target("kernel_test")
     add_rpathdirs("@loader_path/../sdl3")
     add_links("SDL3")
     add_cflags("-Wall", "-Wextra", "-Wpedantic", {tools = {"clang", "gcc"}})
+    before_build(function ()
+        os.execv("sh", {"tools/check_repo_compile.sh", "lib"})
+        os.execv("sh", {"tools/check_repo_compile.sh", "libce"})
+    end)
+
+target("check_tools")
+    set_kind("phony")
+    on_run(function ()
+        os.execv("sh", {"tools/check_repo_compile.sh", "tools"})
+    end)
+
+target("check_lib")
+    set_kind("phony")
+    on_run(function ()
+        os.execv("sh", {"tools/check_repo_compile.sh", "lib"})
+    end)
+
+target("check_libce")
+    set_kind("phony")
+    on_run(function ()
+        os.execv("sh", {"tools/check_repo_compile.sh", "libce"})
+    end)
+
+target("check_repo_compile")
+    set_kind("phony")
+    on_run(function ()
+        os.execv("sh", {"tools/check_repo_compile.sh", "all"})
+    end)
